@@ -266,6 +266,19 @@ h1 {
 }
 
 
+/* Pieni ohut nuoli uuteen välilehteen aukeavalle linkille (CV) */
+.ulkoinen-nuoli {
+    width: 0.7em;
+    height: 0.7em;
+    flex-shrink: 0;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 .navinappi:hover {
     color: var(--Kylma);
     text-shadow: 0 0 20px #f1f8f198;
@@ -833,6 +846,63 @@ footer p {
 
     .työ:hover .tyo-nappi {
         color: var(--Tekstivärikulta);
+    }
+}
+
+
+/* Kosketusnäytöt: ohje ja +/× -merkki kertovat, että korttia voi napauttaa.
+   Hiirellä käytettäessä ne ovat piilossa, koska hover näyttää kuvauksen. */
+.tyo-vihje,
+.tyo-merkki {
+    display: none;
+}
+
+@media (hover: none) {
+    .tyo-vihje {
+        display: block;
+        max-width: var(--sivun-leveys);
+        margin: var(--space-m) auto calc(-1 * var(--space-m));
+        padding: 0 var(--sivureuna);
+
+        font-size: var(--text-s);
+        color: var(--Vaimea);
+    }
+
+    .tyo-nappi {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    /* Plus-merkki kahdesta viivasta; auki-tilassa kääntyy ristiksi */
+    .tyo-merkki {
+        display: block;
+        position: relative;
+        width: 0.7em;
+        height: 0.7em;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+    }
+
+    .tyo-merkki::before,
+    .tyo-merkki::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        margin-top: -1px;
+        background: currentColor;
+        border-radius: 2px;
+    }
+
+    .tyo-merkki::after {
+        transform: rotate(90deg);
+    }
+
+    .työ.auki .tyo-merkki {
+        transform: rotate(45deg);
     }
 }
 
