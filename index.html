@@ -289,20 +289,23 @@
                 let’s talk!
             </p>
 
-            <!-- Lomake lähetetään Netlify Formsiin, joka välittää viestin sähköpostiin.
-                 JavaScript lähettää sen sivulla pysyen. Ilman JavaScriptiä selain
-                 siirtyy kiitossivulle (action). -->
+            <!-- Lomake lähetetään Web3Formsiin, joka välittää viestin sähköpostiin.
+                 JavaScript lähettää sen sivulla pysyen. Ilman JavaScriptiä Web3Forms
+                 ohjaa kiitossivulle (redirect). -->
 
-            <form id="yhteyslomake" name="contact" method="POST" action="thanks.html"
-                  data-netlify="true" netlify-honeypot="bot-field"
+            <form id="yhteyslomake" name="contact" method="POST"
+                  action="https://api.web3forms.com/submit"
                   aria-describedby="lomake-ohje">
 
-                <!-- Netlify tunnistaa lomakkeen tästä nimestä -->
-                <input type="hidden" name="form-name" value="contact">
+                <!-- Web3Formsin julkinen avain: tunnistaa, kenen sähköpostiin viesti menee -->
+                <input type="hidden" name="access_key" value="b7be757b-7c99-46ff-808c-0305d095309d">
+                <input type="hidden" name="subject" value="New message from samulikivela.com">
+                <input type="hidden" name="from_name" value="samulikivela.com">
+                <input type="hidden" name="redirect" value="https://samulikivela.com/thanks.html">
 
                 <!-- Roskapostiansa: ihminen ei näe kenttää, botti täyttää sen -->
                 <p class="ansa" aria-hidden="true">
-                    <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+                    <label>Leave this empty <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label>
                 </p>
 
                 <p id="lomake-ohje" class="lomake-ohje">
@@ -513,7 +516,7 @@
     </script>
 
 
-    <!-- LOMAKKEEN LÄHETYS (Netlify Forms) -->
+    <!-- LOMAKKEEN LÄHETYS (Web3Forms) -->
 
     <script>
     (function () {
@@ -532,13 +535,14 @@
             tila.textContent = "Sending…";
 
             try {
-                const vastaus = await fetch("/", {
+                const vastaus = await fetch(lomake.action, {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams(new FormData(lomake)).toString()
+                    headers: { Accept: "application/json" },
+                    body: new FormData(lomake)
                 });
 
-                if (!vastaus.ok) throw new Error(vastaus.status);
+                const tulos = await vastaus.json();
+                if (!vastaus.ok || !tulos.success) throw new Error(tulos.message || vastaus.status);
 
                 lomake.reset();
                 tila.textContent = "Thanks! Your message has been sent. I’ll get back to you soon.";

@@ -70,7 +70,7 @@ Kuvat/tyot/         Work-sivun julisteet pakattuina (alkuperäiset gitissä, com
 <!-- Kehittämiskohteet -->
 
 -Audioreel on Google Driven upotus, jonka ulkoasuun en voi vaikuttaa.
--Lomake lähetetään Netlify Formsilla, joka välittää viestit sähköpostiin. Toimii vain Netlifyssä julkaistuna (ei GitHub Pagesissa).
+-Lomake lähetetään Web3Formsilla (api.web3forms.com), joka välittää viestit sähköpostiin. Sivu julkaistaan GitHub Pagesissa osoitteessa samulikivela.com.
 
 
 
